@@ -22,12 +22,12 @@ export function Hero() {
         <div className="absolute inset-0 bg-black/60" />
       </div>
 
-      <div className="container mx-auto px-4 z-10 text-center text-white">
+      <div className="container mx-auto px-6 z-10 text-center text-white">
         <h1 className="text-5xl md:text-7xl mb-6">
-          Unibox Studio
+          UniBox Studio
         </h1>
         <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90">
-          Crafting Visual Stories That Captivate, Inspire, and Transform
+          Made to stand out!
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button

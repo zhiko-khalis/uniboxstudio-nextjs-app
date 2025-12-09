@@ -6,7 +6,7 @@ import { projects } from "../data/projects";
 export function Work() {
   return (
     <section id="work" className="py-24">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl mb-4">Our Work</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">

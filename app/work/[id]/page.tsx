@@ -23,7 +23,7 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="border-b">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-6 py-6">
           <Link href="/#work">
             <Button variant="ghost" className="mb-4">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -35,7 +35,7 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
 
       {/* Hero Section */}
       <section className="py-12">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <div className="text-sm text-muted-foreground mb-2">{project.category}</div>
@@ -83,7 +83,7 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
 
       {/* Project Details */}
       <section className="py-12 bg-muted/30">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2">
               <h2 className="text-3xl font-bold mb-6">Project Overview</h2>
@@ -138,7 +138,7 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
       {/* Gallery */}
       {project.gallery && project.gallery.length > 0 && (
         <section className="py-12">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-6">
             <h2 className="text-3xl font-bold mb-8">Project Gallery</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {project.gallery.map((image, index) => (
@@ -158,7 +158,7 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
       {/* Testimonial */}
       {project.testimonial && (
         <section className="py-12 bg-muted/30">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-6">
             <Card className="p-8 max-w-4xl mx-auto">
               <div className="text-center">
                 <blockquote className="text-xl italic mb-6">

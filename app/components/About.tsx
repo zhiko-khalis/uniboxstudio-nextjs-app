@@ -10,7 +10,7 @@ const stats = [
 export function About() {
   return (
     <section id="about" className="py-24 bg-muted/30">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-4xl md:text-5xl mb-6">About Unibox Studio</h2>

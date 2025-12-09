@@ -3,14 +3,14 @@ import { Instagram, Twitter, Linkedin, Youtube } from "lucide-react";
 export function Footer() {
   return (
     <footer className="bg-primary text-primary-foreground py-12">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
               <img
-                src="/white logo.png"
+                src="/logo unibox studio black.png"
                 alt="Unibox Studio Logo"
-                className="w-28 h-12"
+                className="w-auto h-12"
               />
               {/* <span className="text-xl">Unibox Studio</span> */}
             </div>

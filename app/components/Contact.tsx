@@ -24,7 +24,7 @@ export function Contact() {
 
   return (
     <section id="contact" className="py-24">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl mb-4">Get In Touch</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -42,7 +42,7 @@ export function Contact() {
                 </div>
                 <div>
                   <div className="mb-1">Email</div>
-                  <p className="text-muted-foreground">uniboxstudio@gmail.com</p>
+                  <p className="text-muted-foreground">StudioUniBox@gmail.com</p>
                 </div>
               </div>
 
@@ -52,7 +52,8 @@ export function Contact() {
                 </div>
                 <div>
                   <div className="mb-1">Phone</div>
-                  <p className="text-muted-foreground">(750) 123-4567</p>
+                  <p className="text-muted-foreground">(+964) 750 858 0055</p>
+                  <p className="text-muted-foreground">(+964) 770 858 0055</p>
                 </div>
               </div>
 
@@ -63,8 +64,8 @@ export function Contact() {
                 <div>
                   <div className="mb-1">Address</div>
                   <p className="text-muted-foreground">
-                    123 Studio Lane<br />
-                    Braeaty street, CA 90001
+                    UniBox Studio <br />
+                    Erbil - Iraq - Brayati
                   </p>
                 </div>
               </div>
