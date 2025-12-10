@@ -6,9 +6,9 @@ export default function NotFound() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Project Not Found</h1>
+        <h1 className="text-4xl font-bold mb-4">Coming Soon</h1>
         <p className="text-muted-foreground mb-8 max-w-md">
-          The project you're looking for doesn't exist or has been moved.
+          This project is not available yet.
         </p>
         <Link href="/#work">
           <Button>
