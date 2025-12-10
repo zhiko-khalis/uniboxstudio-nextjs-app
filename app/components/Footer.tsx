@@ -59,23 +59,23 @@ export function Footer() {
             <h4 className="mb-4">Follow Us</h4>
             <div className="flex gap-4">
               <a
-                href="#"
+                href="https://www.instagram.com/uniboxstudio?igsh=ZjViaTI4cWtzNzl0"
                 className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
               >
                 <Instagram className="h-5 w-5" />
               </a>
-              <a
+              {/* <a
                 href="#"
                 className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
               >
                 <Twitter className="h-5 w-5" />
-              </a>
-              <a
+              </a> */}
+              {/* <a
                 href="#"
                 className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
               >
                 <Linkedin className="h-5 w-5" />
-              </a>
+              </a> */}
               <a
                 href="#"
                 className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
