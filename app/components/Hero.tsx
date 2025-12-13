@@ -3,51 +3,7 @@
 import { Button } from "./ui/button";
 import { Play } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useMemo } from "react";
-
-const AnimatedText = ({ text }: { text: string }) => {
-  const letters = text.split("");
-
-  // Pre-calculate drift values for each letter to ensure consistency
-  const driftValues = useMemo(() => {
-    return letters.map((_, index) => {
-      // Use index-based pseudo-random for consistent drift per letter
-      const seed = index * 0.618; // Golden ratio for better distribution
-      const driftX = (Math.sin(seed) * 15) + (Math.cos(seed * 2) * 10);
-      const driftY = (Math.cos(seed) * 12) + (Math.sin(seed * 1.5) * 8);
-      return { x: driftX, y: driftY };
-    });
-  }, [letters.length]);
-
-  return (
-    <h1 className="text-5xl md:text-7xl mb-6 font-bold flex items-center justify-center">
-      {letters.map((letter, index) => {
-        const drift = driftValues[index];
-        return (
-          <motion.span
-            key={index}
-            className="inline-block"
-            initial={{ opacity: 0, y: 30, x: 0 }}
-            animate={{
-              opacity: [0, 1, 1, 0.8, 0],
-              y: [30, 0, drift.y, drift.y * 1.5, 30],
-              x: [0, 0, drift.x, drift.x * 1.2, 0],
-            }}
-            transition={{
-              duration: 4,
-              delay: index * 0.08,
-              repeat: Infinity,
-              repeatDelay: 0.3,
-              ease: [0.4, 0, 0.2, 1],
-            }}
-          >
-            {letter === " " ? "\u00A0" : letter}
-          </motion.span>
-        );
-      })}
-    </h1>
-  );
-};
+import { useRef } from "react";
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -78,7 +34,7 @@ export function Hero() {
         className="absolute inset-0 z-0"
       >
         <motion.img
-          src="/heroImage.jpeg"
+          src="/photo&videoo.jpg"
           alt="Film Production Studio"
           className="w-full h-full object-cover"
           initial={{ scale: 1.2 }}
@@ -97,7 +53,14 @@ export function Hero() {
         style={{ y }}
         className="container mx-auto px-6 z-10 text-center text-white relative"
       >
-        <AnimatedText text="UniBox Studio" />
+        <motion.h1
+          className="text-5xl md:text-7xl mb-6 font-bold"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          UNIBOX studio
+        </motion.h1>
         <motion.p
           className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90"
           initial={{ opacity: 0, y: 30 }}

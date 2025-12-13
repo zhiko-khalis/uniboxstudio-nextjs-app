@@ -10,11 +10,12 @@ export function Preloader() {
     // Prevent body scroll while preloader is active
     document.body.style.overflow = "hidden";
 
-    // Set timeout to hide preloader after animation
+    // Set timeout to hide preloader after zoom animation completes
+    // Zoom takes 5s, then fade out takes 0.3s
     const timer = setTimeout(() => {
       setIsLoading(false);
       document.body.style.overflow = "";
-    }, 2500); // Total animation duration
+    }, 4200); // Total animation duration
 
     return () => {
       clearTimeout(timer);
@@ -26,45 +27,32 @@ export function Preloader() {
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          className="fixed inset-0 z-[9999] bg-background flex items-center justify-center"
+          className="fixed inset-0 z-[9999] bg-background flex items-center justify-center overflow-hidden"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.3, ease: "circIn" }}
         >
-          <motion.div
-            initial={{ scale: 0.5, opacity: 0, rotate: -180 }}
-            animate={{ scale: 1, opacity: 1, rotate: 0 }}
+          <motion.img
+            src="/logo-unibox-svg.svg"
+            alt="Unibox Studio Logo"
+            className="w-[700px] h-auto md:w-[1300px]"
+            draggable={false}
+            initial={{ scale: 1, opacity: 1 }}
+            animate={{
+              scale: 110, // Scale to fill the entire screen
+              opacity: [1, 1, 0.8, 0.3, 0],
+            }}
             transition={{
-              duration: 0.8,
-              ease: [0.34, 1.56, 0.64, 1],
+              scale: {
+                duration: 6,
+                ease: "circIn",
+              },
+              opacity: {
+                duration: 6,
+                times: [0, 0.85, 0.95, 0.98, 1],
+                ease: "circIn",
+              },
             }}
-          >
-            <motion.img
-              src="/logo unibox studio.png"
-              alt="Unibox Studio Logo"
-              className="w-32 h-auto md:w-40"
-              draggable={false}
-              initial={{ scale: 1 }}
-              animate={{
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          </motion.div>
-
-          {/* Cinematic vignette effect */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: "radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%)",
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
           />
         </motion.div>
       )}
