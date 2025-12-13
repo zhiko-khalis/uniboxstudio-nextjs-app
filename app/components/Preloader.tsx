@@ -1,79 +1,74 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function Preloader() {
   const [isLoading, setIsLoading] = useState(true);
-  const [zoomLevel, setZoomLevel] = useState(1);
-  const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
     // Prevent body scroll while preloader is active
     document.body.style.overflow = "hidden";
 
-    // Start zoom animation after a brief delay to ensure logo is visible
-    const startZoom = setTimeout(() => {
-      // Accelerating zoom animation
-      const duration = 2000; // 2 seconds for zoom
-      const startTime = Date.now();
-      const startZoomValue = 1;
-      const endZoom = 40; // Final zoom level to fill screen
-
-      const animate = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Easing function for accelerating zoom (ease-in-cubic for stronger acceleration)
-        const easedProgress = progress * progress * progress;
-        const currentZoom = startZoomValue + (endZoom - startZoomValue) * easedProgress;
-        
-        setZoomLevel(currentZoom);
-
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          // After zoom completes, fade out and hide preloader
-          setIsFadingOut(true);
-          setTimeout(() => {
-            setIsLoading(false);
-            document.body.style.overflow = "";
-          }, 400); // Fade out duration
-        }
-      };
-
-      requestAnimationFrame(animate);
-    }, 400); // Small delay before starting zoom to show logo first
+    // Set timeout to hide preloader after animation
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      document.body.style.overflow = "";
+    }, 2500); // Total animation duration
 
     return () => {
-      clearTimeout(startZoom);
+      clearTimeout(timer);
       document.body.style.overflow = "";
     };
   }, []);
 
-  if (!isLoading) return null;
-
   return (
-    <div
-      className={`fixed inset-0 z-[9999] bg-background flex items-center justify-center transition-opacity ${
-        isFadingOut ? "opacity-0" : "opacity-100"
-      }`}
-      style={{ transitionDuration: "400ms" }}
-    >
-      <div
-        style={{
-          transform: `scale(${zoomLevel})`,
-          transformOrigin: "center center",
-          transition: "transform 0.1s ease-out",
-        }}
-      >
-        <img
-          src="/logo unibox studio.png"
-          alt="Unibox Studio Logo"
-          className="w-32 h-auto md:w-40"
-          draggable={false}
-        />
-      </div>
-    </div>
+    <AnimatePresence>
+      {isLoading && (
+        <motion.div
+          className="fixed inset-0 z-[9999] bg-background flex items-center justify-center"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0, rotate: -180 }}
+            animate={{ scale: 1, opacity: 1, rotate: 0 }}
+            transition={{
+              duration: 0.8,
+              ease: [0.34, 1.56, 0.64, 1],
+            }}
+          >
+            <motion.img
+              src="/logo unibox studio.png"
+              alt="Unibox Studio Logo"
+              className="w-32 h-auto md:w-40"
+              draggable={false}
+              initial={{ scale: 1 }}
+              animate={{
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </motion.div>
+
+          {/* Cinematic vignette effect */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: "radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%)",
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          />
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 

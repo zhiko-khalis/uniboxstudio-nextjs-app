@@ -287,3 +287,54 @@ body::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
 
+/* Cinematic Border Animation */
+@keyframes cinematic-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes cinematic-border-reverse {
+  0% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-cinematic-border {
+  animation: cinematic-border 3s ease-in-out infinite;
+}
+
+.animate-cinematic-border-reverse {
+  animation: cinematic-border-reverse 4s ease-in-out infinite;
+}
+
+/* Cinematic Gradient Classes */
+.cinematic-gradient-1 {
+  background: linear-gradient(90deg, var(--color-primary), #a855f7, #ec4899, var(--color-primary));
+}
+
+.cinematic-gradient-2 {
+  background: linear-gradient(90deg, var(--color-primary), #3b82f6, #06b6d4, var(--color-primary));
+}
+
+.cinematic-gradient-glow {
+  background: linear-gradient(90deg, 
+    rgba(3, 2, 19, 0.2), 
+    rgba(168, 85, 247, 0.2), 
+    rgba(236, 72, 153, 0.2), 
+    rgba(3, 2, 19, 0.2)
+  );
+}
+
