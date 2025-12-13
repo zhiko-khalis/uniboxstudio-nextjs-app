@@ -40,7 +40,7 @@ export function Preloader() {
             initial={{ scale: 1, opacity: 1 }}
             animate={{
               scale: 110, // Scale to fill the entire screen
-              opacity: [1, 1, 0.8, 0.3, 0],
+              // opacity: [1, 1, 0.8, 0.3, 0],
             }}
             transition={{
               scale: {
