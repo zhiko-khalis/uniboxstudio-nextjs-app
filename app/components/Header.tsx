@@ -16,6 +16,10 @@ export function Header() {
     }
   };
 
+  const handleMobileMenuToggle = () => {
+    setMobileMenuOpen((prev) => !prev);
+  };
+
   const navItems = [
     { id: "home", label: "Home" },
     { id: "services", label: "Services" },
@@ -88,13 +92,17 @@ export function Header() {
           </nav>
 
           {/* Mobile Menu Button */}
-          <motion.button
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            whileTap={{ scale: 0.9 }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+          <button
+            className="md:hidden z-50 relative cursor-pointer p-2 -mr-2"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleMobileMenuToggle();
+            }}
+            aria-label="Toggle mobile menu"
+            aria-expanded={mobileMenuOpen}
+            type="button"
+            style={{ pointerEvents: 'auto', touchAction: 'manipulation' }}
           >
             <AnimatePresence mode="wait">
               {mobileMenuOpen ? (
@@ -119,18 +127,19 @@ export function Header() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.button>
+          </button>
         </div>
 
         {/* Mobile Navigation */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.nav
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="md:hidden overflow-hidden"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden border-t border-border mt-2 pt-4"
+              style={{ pointerEvents: 'auto' }}
             >
               <div className="py-4 flex flex-col gap-4">
                 {navItems.map((item, index) => (
@@ -138,9 +147,13 @@ export function Header() {
                     key={item.id}
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                    onClick={() => scrollToSection(item.id)}
-                    className="text-left hover:text-primary transition-colors"
+                    transition={{ duration: 0.2, delay: index * 0.05 }}
+                    onClick={() => {
+                      scrollToSection(item.id);
+                    }}
+                    className="text-center hover:text-primary transition-colors cursor-pointer py-3 px-4 rounded-md hover:bg-accent/50 w-full text-base font-medium"
+                    type="button"
+                    style={{ pointerEvents: 'auto' }}
                   >
                     {item.label}
                   </motion.button>
@@ -148,9 +161,16 @@ export function Header() {
                 <motion.div
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.3, delay: navItems.length * 0.1 }}
+                  transition={{ duration: 0.2, delay: navItems.length * 0.05 }}
+                  style={{ pointerEvents: 'auto' }}
                 >
-                  <Button onClick={() => scrollToSection("contact")} className="w-full">
+                  <Button 
+                    onClick={() => {
+                      scrollToSection("contact");
+                    }} 
+                    className="w-full cursor-pointer mt-2"
+                    type="button"
+                  >
                     Contact Us
                   </Button>
                 </motion.div>
