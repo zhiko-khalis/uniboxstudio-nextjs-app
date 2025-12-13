@@ -27,7 +27,7 @@ export function About() {
               transition={{ duration: 0.6 }}
             >
               <motion.h2
-                className="text-4xl md:text-5xl mb-6"
+                className="text-4xl font-bold md:text-5xl mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

@@ -15,7 +15,7 @@ export function Preloader() {
     const timer = setTimeout(() => {
       setIsLoading(false);
       document.body.style.overflow = "";
-    }, 4200); // Total animation duration
+    }, 3100); // Total animation duration
 
     return () => {
       clearTimeout(timer);
@@ -39,16 +39,16 @@ export function Preloader() {
             draggable={false}
             initial={{ scale: 1, opacity: 1 }}
             animate={{
-              scale: 110, // Scale to fill the entire screen
+              scale: 40, // Scale to fill the entire screen
               // opacity: [1, 1, 0.8, 0.3, 0],
             }}
             transition={{
               scale: {
-                duration: 6,
+                duration: 3,
                 ease: "circIn",
               },
               opacity: {
-                duration: 6,
+                duration: 3,
                 times: [0, 0.85, 0.95, 0.98, 1],
                 ease: "circIn",
               },

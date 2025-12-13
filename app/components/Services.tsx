@@ -365,7 +365,7 @@ development, cybersecurity, casting, printing, and data distribution & surveys a
                             <ChevronDown className="h-5 w-5 text-white" />
                           </motion.div>
                         </div>
-                        <CardTitle className="text-xl text-white">{service.title}</CardTitle>
+                        <CardTitle className="text-xl font-bold text-white">{service.title}</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <AnimatePresence mode="wait">
@@ -478,7 +478,7 @@ development, cybersecurity, casting, printing, and data distribution & surveys a
                               exit={{ opacity: 0, y: 10 }}
                               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
                             >
-                              <CardDescription className="text-base mt-2 text-white/80">
+                              <CardDescription className="text-[13px] mt-2 text-white/80">
                                 Click to view all services
                               </CardDescription>
                             </motion.div>
