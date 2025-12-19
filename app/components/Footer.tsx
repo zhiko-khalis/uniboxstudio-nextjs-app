@@ -35,7 +35,13 @@ export function Footer() {
 
   return (
     <motion.footer
-      className="bg-primary text-primary-foreground py-12 overflow-hidden"
+      className="bg-primary text-primary-foreground py-12 overflow-hidden relative"
+      style={{
+        backgroundImage: "url('/pattern .svg')",
+        backgroundRepeat: "repeat",
+        backgroundPosition: "center",
+        backgroundSize: "auto",
+      }}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}

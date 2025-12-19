@@ -15,7 +15,7 @@ export function Preloader() {
     const timer = setTimeout(() => {
       setIsLoading(false);
       document.body.style.overflow = "";
-    }, 3100); // Total animation duration
+    }, 1500); // Total animation duration
 
     return () => {
       clearTimeout(timer);
@@ -44,11 +44,11 @@ export function Preloader() {
             }}
             transition={{
               scale: {
-                duration: 3,
+                duration: 1.5,
                 ease: "circIn",
               },
               opacity: {
-                duration: 3,
+                duration: 1.5,
                 times: [0, 0.85, 0.95, 0.98, 1],
                 ease: "circIn",
               },

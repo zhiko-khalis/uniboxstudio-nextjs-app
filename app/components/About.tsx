@@ -16,7 +16,10 @@ const stats = [
 
 export function About() {
   return (
-    <section id="about" className="py-24 bg-muted/30 overflow-hidden">
+    <section
+      id="about"
+      className="py-24 bg-muted/30 overflow-hidden px-4 md:px-8"
+    >
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <SlideInLeft>
@@ -36,16 +39,16 @@ export function About() {
                 About UNIBOX STUDIO
               </motion.h2>
               <motion.p
-                className="text-muted-foreground mb-6"
+                className="text-muted-foreground mb-2 text-justify"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                UNIBOX STUDIO is a comprehensive creative agency and production house delivering complete solutions across media, advertising, digital development, marketing, printing, casting, and data services. We provide professional studio and outdoor production, TVC, podcast creation, social media management, website & app development, cybersecurity, casting, printing, and data distribution & surveys all in one place.
+                UNIBOX STUDIO is a comprehensive creative agency and production house delivering complete solutions across media, advertising, digital development, marketing, printing, casting, and data services We provide professional studio and outdoor production, TVC, podcast creation, social media management, website & app development, cybersecurity, casting, printing, and data distribution & surveys all in one place.
               </motion.p>
               <motion.p
-                className="text-muted-foreground mb-8"
+                className="text-muted-foreground mb-8 text-justify"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -63,13 +66,13 @@ export function About() {
               >
                 <div>
                   <h3 className="text-2xl font-semibold mb-3 text-primary">VISION</h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-justify">
                     To become the region's leading integrated creative and digital agency, combining media excellence with technological innovation and strategic data solutions.
                   </p>
                 </div>
                 <div>
                   <h3 className="text-2xl font-semibold mb-3 text-primary">MISSION</h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground text-justify">
                     To deliver impactful content, modern digital tools, secure technology services, and accurate data insights that help brands grow with confidence.
                   </p>
                 </div>

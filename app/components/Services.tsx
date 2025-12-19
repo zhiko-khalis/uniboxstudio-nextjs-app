@@ -1,16 +1,13 @@
-"use client";
+'use client';
 
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 import { 
   Camera, Video, Building2, MapPin, Tv, Mic, Users, Share2, 
   TrendingUp, Sparkles, Smartphone, Shield, ClipboardCheck, Printer,
-  ChevronDown
-} from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { motion, AnimatePresence } from "framer-motion";
-import { StaggerContainer } from "./animations/StaggerContainer";
-import { StaggerItem } from "./animations/StaggerItem";
-import { FadeInUp } from "./animations/FadeInUp";
-import { useState } from "react";
+  ArrowRight
+} from 'lucide-react';
+import Image from 'next/image';
 
 const services = [
   {
@@ -72,7 +69,7 @@ const services = [
   {
     icon: Tv,
     title: "TVC Production & Podcast Production",
-    backgroundImage: "/tv&podcastt.jpg",
+    backgroundImage: "/tv&podcastttttt.jpg",
     items: [
       {
         category: "TVC Production (Television Commercials)",
@@ -125,26 +122,29 @@ const services = [
   },
   {
     icon: TrendingUp,
-    title: "Digital Marketing & Advertising",
-    backgroundImage: "/heroImage.jpeg",
-    items: [
-      "Meta, TikTok & Google Ads",
-      "Branding & Identity Creation",
-      "Creative Campaigns",
-      "Rebranding",
-      "Marketing Consultations"
-    ],
-  },
-  {
-    icon: Sparkles,
-    title: "Creative Content Production",
+    title: "Digital Marketing - Advertising & Creative Content Production",
     backgroundImage: "/contentt.jpg",
     items: [
-      "Motion Graphics",
-      "2D / 3D Animation",
-      "Graphic Design",
-      "Logo Animation",
-      "Short Reels & TikTok Videos"
+      {
+        category: "Digital Marketing - Advertising",
+        list: [
+          "Meta, TikTok & Google Ads",
+          "Branding & Identity Creation",
+          "Creative Campaigns",
+          "Rebranding",
+          "Marketing Consultations"
+        ]
+      },
+      {
+        category: "Creative Content Production",
+        list: [
+          "Motion Graphics",
+          "2D / 3D Animation",
+          "Graphic Design",
+          "Logo Animation",
+          "Short Reels & TikTok Videos"
+        ]
+      }
     ],
   },
   {
@@ -178,321 +178,208 @@ const services = [
   },
   {
     icon: ClipboardCheck,
-    title: "Data Distribution & Survey Services",
+    title: "Data Distribution - Survey Services & Printing Services",
     backgroundImage: "/data-distribitionn.jpg",
     items: [
-      "Field Data Collection",
-      "Online Surveys",
-      "Customer Satisfaction Surveys",
-      "Market Research Surveys",
-      "Data Entry & Processing"
-    ],
-  },
-  {
-    icon: Printer,
-    title: "Printing Services",
-    backgroundImage: "/printt.jpg",
-    items: [
-      "Business Cards",
-      "Flyers & Brochures",
-      "Roll ups & Banners",
-      "Posters & Menus",
-      "Labels & Packaging"
+      {
+        category: "Data Distribution - Survey Services",
+        list: [
+          "Field Data Collection",
+          "Online Surveys",
+          "Customer Satisfaction Surveys",
+          "Market Research Surveys",
+          "Data Entry & Processing"
+        ]
+      },
+      {
+        category: "Printing Services",
+        list: [
+          "Business Cards",
+          "Flyers & Brochures",
+          "Roll ups & Banners",
+          "Posters & Menus",
+          "Labels & Packaging"
+        ]
+      }
     ],
   },
 ];
 
 export function Services() {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
 
-  const handleServiceClick = (index: number) => {
-    const isExpanded = expandedIndex === index;
-    setExpandedIndex(isExpanded ? null : index);
-    
-    // Smooth scroll to the clicked service card
-    if (!isExpanded) {
-      setTimeout(() => {
-        const cardElement = document.querySelector(`[data-service-index="${index}"]`);
-        if (cardElement) {
-          cardElement.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'nearest',
-            inline: 'nearest'
-          });
-        }
-      }, 100);
+  const getServiceIcon = (service: typeof services[0]) => {
+    const Icon = service.icon;
+    if (service.title === "Photography & Videography") {
+      return <><Camera size={24} /><Video size={24} /></>;
+    } else if (service.title === "Studio Facilities & Outdoor Production Services") {
+      return <><Building2 size={24} /><MapPin size={24} /></>;
+    } else if (service.title === "TVC Production & Podcast Production") {
+      return <><Tv size={24} /><Mic size={24} /></>;
+    } else if (service.title === "Application Development & Cybersecurity") {
+      return <><Smartphone size={24} /><Shield size={24} /></>;
+    } else if (service.title === "Casting Services & Social Media Management") {
+      return <><Users size={24} /><Share2 size={24} /></>;
+    } else if (service.title === "Data Distribution - Survey Services & Printing Services") {
+      return <><ClipboardCheck size={24} /><Printer size={24} /></>;
+    } else if (service.title === "Digital Marketing & Advertising & Creative Content Production") {
+      return <><TrendingUp size={24} /><Sparkles size={24} /></>;
     }
+    return <Icon size={24} />;
+  };
+
+  const renderServiceItems = (items: typeof services[0]['items']) => {
+    if (Array.isArray(items) && items.length > 0 && typeof items[0] === 'object' && items[0] !== null && 'category' in items[0]) {
+      return (
+        <div className="space-y-6">
+          {(items as Array<{ category: string; list: string[] }>).map((categoryItem, categoryIndex) => (
+            <div key={categoryIndex}>
+              <h4 className="text-sm font-semibold text-black mb-3 uppercase tracking-wider">
+                {categoryItem.category}
+              </h4>
+              <ul className="space-y-2">
+                {categoryItem.list.map((item, itemIndex) => (
+                  <li key={itemIndex} className="text-[13px] text-black/80 flex items-start">
+                    <span className="text-black/60 mr-2">•</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      );
+    } else if (Array.isArray(items) && (items.length === 0 || typeof items[0] === 'string')) {
+      return (
+        <ul className="space-y-2">
+          {((items as unknown) as string[]).map((item, itemIndex) => (
+            <li key={itemIndex} className="text-[13px] text-black/80 flex items-start">
+              <span className="text-black/60 mr-2">•</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    return null;
   };
 
   return (
-    <section id="services" className="py-24 bg-muted/30 overflow-hidden">
-      <div className="container mx-auto px-6">
-        <FadeInUp>
-          <div className="text-center mb-16">
-            <motion.h2
-              className="text-4xl md:text-5xl mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              Our Services
-            </motion.h2>
-            <motion.p
-              className="text-muted-foreground max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              UNIBOX STUDIO i s a comprehensive creative agency and production house delivering complete solutions across media,
-advertising, digital development, marketing, printing, casting, a n d data services.
-We provide professional studio and outdoor production, TVC, podcast creation, social media management, website & a p p
-development, cybersecurity, casting, printing, and data distribution & surveys all in one place.
-            </motion.p>
-          </div>
-        </FadeInUp>
+    <section
+      id="services"
+      className="relative pt-24 pb-24 md:pt-24 md:pb-24 bg-muted/30 text-black overflow-hidden"
+    >
+      {/* Background Elements */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gray-100 rounded-full blur-[120px]" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gray-100 rounded-full blur-[120px]" />
+      </div>
 
-        <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, index) => {
-            const Icon = service.icon;
-            const isExpanded = expandedIndex === index;
-            return (
-              <StaggerItem key={index}>
-                <motion.div
-                  data-service-index={index}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  animate={{ 
-                    scale: isExpanded ? 1.03 : 1,
-                    y: isExpanded ? -12 : 0
-                  }}
-                  transition={{ 
-                    duration: 0.4, 
-                    ease: [0.25, 0.1, 0.25, 1],
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 30
-                  }}
-                  className={`relative group ${isExpanded ? 'z-10' : 'z-1'}`}
-                >
-                  <motion.div
-                    animate={{
-                      boxShadow: isExpanded 
-                        ? "0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)" 
-                        : "0 1px 3px 0 rgba(0, 0, 0, 0.1)"
-                    }}
-                    transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                  >
-                    <Card className={`relative hover:shadow-xl transition-all duration-300 h-full border-2 bg-card/95 backdrop-blur-sm cursor-pointer overflow-hidden ${
-                      isExpanded ? 'border-primary shadow-2xl' : 'hover:border-primary/50'
-                    }`}
-                          onClick={() => handleServiceClick(index)}>
-                    {/* Background Image */}
-                    <div className="absolute inset-0 z-0">
-                      {/* Fallback gradient background */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-muted" />
-                      <motion.img
-                        src={service.backgroundImage}
-                        alt={service.title}
-                        className="w-full h-full object-cover"
-                        initial={{ scale: 1 }}
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.5 }}
-                        onError={(e) => {
-                          // Hide image if it fails to load, fallback gradient will show
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                        }}
-                      />
-                      {/* Dark Overlay for text readability */}
-                      <motion.div
-                        // className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-300"
-                        initial={{ opacity: 0.6 }}
-                        whileHover={{ opacity: 0.75 }}
-                      />
-                      {/* Gradient overlay for better text contrast */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/60" />
+      <div ref={ref} className="relative z-10 container mx-auto px-4 lg:px-12">
+        {/* Section heading */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="mb-12 md:mb-16"
+        >
+          <h2 className="bg-gradient-to-r from-black uppercase via-black to-black bg-clip-text text-center text-transparent text-4xl md:text-5xl">
+            Our Services
+          </h2>
+          <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-gray-300 to-transparent mx-auto mt-4" />
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-[13px] leading-relaxed font-light text-black/80 max-w-3xl mx-auto mt-8 text-justify"
+          >
+            UNIBOX STUDIO is a comprehensive creative agency and production house delivering complete solutions across media,
+            advertising, digital development, marketing, printing, casting, and data services.
+            We provide professional studio and outdoor production, TVC, podcast creation, social media management, website & app
+            development, cybersecurity, casting, printing, and data distribution & surveys all in one place.
+          </motion.p>
+        </motion.div>
+
+        {/* Services List */}
+        <div className="space-y-12 md:space-y-16">
+          {services.map((service, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 50 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.3 + index * 0.15 }}
+              className="group"
+            >
+              <div className="grid lg:grid-cols-[1fr_1.2fr] gap-6 lg:gap-8">
+                {/* Image Section */}
+                <div className="relative border border-black/40 bg-white overflow-hidden h-[300px] md:h-[400px] lg:h-full min-h-[400px]">
+                  <div className="absolute inset-0">
+                    <Image
+                      src={service.backgroundImage}
+                      alt={service.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                  </div>
+                  
+                  {/* Overlay Content */}
+                  <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
+                    <div className="mb-4 flex items-center gap-3">
+                      <div className="text-white/60 group-hover:text-white transition-colors duration-300">
+                        {getServiceIcon(service)}
+                      </div>
                     </div>
-                    
-                    {/* Content */}
-                    <div className="relative z-10">
-                      <CardHeader>
-                        <div className="flex items-start justify-between">
-                          <motion.div
-                            className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mb-4 gap-1"
-                            whileHover={{ rotate: 360, scale: 1.1 }}
-                            transition={{ duration: 0.6, ease: "easeInOut" }}
-                          >
-                            {service.title === "Photography & Videography" ? (
-                              <>
-                                <Camera className="h-4 w-4 text-primary-foreground" />
-                                <Video className="h-4 w-4 text-primary-foreground" />
-                              </>
-                            ) : service.title === "Studio Facilities & Outdoor Production Services" ? (
-                              <>
-                                <Building2 className="h-4 w-4 text-primary-foreground" />
-                                <MapPin className="h-4 w-4 text-primary-foreground" />
-                              </>
-                            ) : service.title === "TVC Production & Podcast Production" ? (
-                              <>
-                                <Tv className="h-4 w-4 text-primary-foreground" />
-                                <Mic className="h-4 w-4 text-primary-foreground" />
-                              </>
-                            ) : service.title === "Application Development & Cybersecurity" ? (
-                              <>
-                                <Smartphone className="h-4 w-4 text-primary-foreground" />
-                                <Shield className="h-4 w-4 text-primary-foreground" />
-                              </>
-                            ) : service.title === "Casting Services & Social Media Management" ? (
-                              <>
-                                <Users className="h-4 w-4 text-primary-foreground" />
-                                <Share2 className="h-4 w-4 text-primary-foreground" />
-                              </>
-                            ) : (
-                              <Icon className="h-5 w-5 text-primary-foreground" />
-                            )}
-                          </motion.div>
-                          <motion.div
-                            animate={{ rotate: isExpanded ? 180 : 0 }}
-                            transition={{ 
-                              duration: 0.4,
-                              ease: [0.25, 0.1, 0.25, 1],
-                              type: "spring",
-                              stiffness: 300,
-                              damping: 25
-                            }}
-                          >
-                            <ChevronDown className="h-5 w-5 text-white" />
-                          </motion.div>
+                    <h3 className="text-3xl md:text-4xl lg:text-3xl font-semibold leading-tight mb-2 uppercase text-white">
+                      {service.title}
+                    </h3>
+                  </div>
+                </div>
+
+                {/* Content Section */}
+                <div className="border border-black/40 bg-white flex flex-col">
+                  {/* Header */}
+                  <div className="px-6 md:px-8 py-6 border-b border-black/40">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="text-black/60 group-hover:text-black transition-colors duration-300">
+                          {getServiceIcon(service)}
                         </div>
-                        <CardTitle className="text-xl font-bold text-white">{service.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <AnimatePresence mode="wait">
-                          {isExpanded && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0, y: -20 }}
-                              animate={{ opacity: 1, height: "auto", y: 0 }}
-                              exit={{ opacity: 0, height: 0, y: -20 }}
-                              transition={{ 
-                                duration: 0.5,
-                                ease: [0.25, 0.1, 0.25, 1],
-                                height: {
-                                  duration: 0.5,
-                                  ease: [0.25, 0.1, 0.25, 1]
-                                },
-                                opacity: {
-                                  duration: 0.4,
-                                  ease: "easeOut"
-                                },
-                                y: {
-                                  duration: 0.4,
-                                  ease: [0.25, 0.1, 0.25, 1]
-                                }
-                              }}
-                              className="mt-4 overflow-hidden"
-                            >
-                              {Array.isArray(service.items) && typeof service.items[0] === 'object' && 'category' in service.items[0] ? (
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                  {service.items.map((categoryItem: any, categoryIndex: number) => (
-                                    <motion.div 
-                                      key={categoryIndex}
-                                      initial={{ opacity: 0, y: 10 }}
-                                      animate={{ opacity: 1, y: 0 }}
-                                      transition={{ 
-                                        delay: categoryIndex * 0.1,
-                                        duration: 0.4,
-                                        ease: [0.25, 0.1, 0.25, 1]
-                                      }}
-                                    >
-                                      <h4 className="text-base font-semibold text-white mb-3">{categoryItem.category}</h4>
-                                      <ul className="space-y-2">
-                                        {categoryItem.list.map((item: string, itemIndex: number) => (
-                                          <motion.li
-                                            key={itemIndex}
-                                            initial={{ opacity: 0, x: -15, scale: 0.95 }}
-                                            animate={{ opacity: 1, x: 0, scale: 1 }}
-                                            transition={{ 
-                                              delay: 0.2 + (categoryIndex * categoryItem.list.length + itemIndex) * 0.03,
-                                              duration: 0.3,
-                                              ease: [0.25, 0.1, 0.25, 1]
-                                            }}
-                                            className="text-sm text-white/90 flex items-start"
-                                          >
-                                            <motion.span 
-                                              className="text-primary mr-2"
-                                              initial={{ scale: 0 }}
-                                              animate={{ scale: 1 }}
-                                              transition={{ 
-                                                delay: 0.2 + (categoryIndex * categoryItem.list.length + itemIndex) * 0.03 + 0.1,
-                                                type: "spring",
-                                                stiffness: 500,
-                                                damping: 25
-                                              }}
-                                            >•</motion.span>
-                                            <span>{item}</span>
-                                          </motion.li>
-                                        ))}
-                                      </ul>
-                                    </motion.div>
-                                  ))}
-                                </div>
-                              ) : (
-                                <ul className="space-y-2">
-                                  {(service.items as string[]).map((item, itemIndex) => (
-                                    <motion.li
-                                      key={itemIndex}
-                                      initial={{ opacity: 0, x: -15, scale: 0.95 }}
-                                      animate={{ opacity: 1, x: 0, scale: 1 }}
-                                      transition={{ 
-                                        delay: 0.2 + itemIndex * 0.03,
-                                        duration: 0.3,
-                                        ease: [0.25, 0.1, 0.25, 1]
-                                      }}
-                                      className="text-sm text-white/90 flex items-start"
-                                    >
-                                      <motion.span 
-                                        className="text-primary mr-2"
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
-                                        transition={{ 
-                                          delay: 0.2 + itemIndex * 0.03 + 0.1,
-                                          type: "spring",
-                                          stiffness: 500,
-                                          damping: 25
-                                        }}
-                                      >•</motion.span>
-                                      <span>{item}</span>
-                                    </motion.li>
-                                  ))}
-                                </ul>
-                              )}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                        <AnimatePresence>
-                          {!isExpanded && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: 10 }}
-                              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                            >
-                              <CardDescription className="text-[13px] mt-2 text-white/80">
-                                Click to view all services
-                              </CardDescription>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </CardContent>
+                        <div>
+                          <h4 className="text-xl md:text-2xl font-semibold text-black">
+                            {service.title}
+                          </h4>
+                        </div>
+                      </div>
                     </div>
-                  </Card>
-                  </motion.div>
-                </motion.div>
-              </StaggerItem>
-            );
-          })}
-        </StaggerContainer>
+                  </div>
+
+                  {/* Description */}
+                  <div className="px-6 md:px-8 py-6 flex-1">
+                    {renderServiceItems(service.items)}
+                  </div>
+
+                  {/* Footer Accent */}
+                  <div className="px-6 md:px-8 py-3 border-t border-black/40">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[9px] tracking-[0.25em] uppercase text-black/70">
+                        Unibox Studio
+                      </span>
+                      <div className="flex items-center gap-2 text-black/60 group-hover:text-black transition-colors duration-300">
+                      <div className="w-12 h-px bg-gradient-to-r from-black/40 to-transparent group-hover:from-black/60 transition-colors duration-300" />
+
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );

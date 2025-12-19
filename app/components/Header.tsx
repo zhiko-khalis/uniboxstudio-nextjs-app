@@ -1,12 +1,26 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -32,7 +46,9 @@ export function Header() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border"
+      className={`fixed top-0 left-0 right-0 z-50 bg-background/0 backdrop-blur-md border-b border-border ${
+        isScrolled ? "text-black" : "text-white"
+      }`}
     >
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-16">
@@ -49,7 +65,11 @@ export function Header() {
               className="hover:opacity-80 transition-opacity"
             >
               <img
-                src="/logo unibox studio.png"
+                src={
+                  isScrolled
+                    ? "/logo unibox studio.png"
+                    : "/logo unibox studio black.png"
+                }
                 alt="Unibox Studio Logo"
                 className="w-auto h-12"
               />
@@ -66,7 +86,7 @@ export function Header() {
                 transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
                 whileHover={{ y: -2 }}
                 onClick={() => scrollToSection(item.id)}
-                className="hover:text-primary transition-colors cursor-pointer relative group"
+                className=" transition-colors cursor-pointer relative group"
               >
                 {item.label}
                 <motion.span
