@@ -305,80 +305,107 @@ export function Services() {
 
         {/* Services List */}
         <div className="space-y-12 md:space-y-16">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 + index * 0.15 }}
-              className="group"
-            >
-              <div className="grid lg:grid-cols-[1fr_1.2fr] gap-6 lg:gap-8">
-                {/* Image Section */}
-                <div className="relative border border-black/40 bg-white overflow-hidden h-[300px] md:h-[400px] lg:h-full min-h-[400px]">
-                  <div className="absolute inset-0">
-                    <Image
-                      src={service.backgroundImage}
-                      alt={service.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                  </div>
-                  
-                  {/* Overlay Content */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-                    <div className="mb-4 flex items-center gap-3">
-                      <div className="text-white/60 group-hover:text-white transition-colors duration-300">
-                        {getServiceIcon(service)}
-                      </div>
-                    </div>
-                    <h3 className="text-3xl md:text-4xl lg:text-3xl font-semibold leading-tight mb-2 uppercase text-white">
-                      {service.title}
-                    </h3>
-                  </div>
-                </div>
+          {services.map((service, index) => {
+            const ServiceItem = ({ service, index }: { service: typeof services[0], index: number }) => {
+              const [serviceRef, serviceInView] = useInView({
+                triggerOnce: true,
+                threshold: 0.2,
+              });
 
-                {/* Content Section */}
-                <div className="border border-black/40 bg-white flex flex-col">
-                  {/* Header */}
-                  <div className="px-6 md:px-8 py-6 border-b border-black/40">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="text-black/60 group-hover:text-black transition-colors duration-300">
-                          {getServiceIcon(service)}
-                        </div>
-                        <div>
-                          <h4 className="text-xl md:text-2xl font-semibold text-black">
-                            {service.title}
-                          </h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              // Determine slide direction based on layout
+              // Even index: text on left, image on right - text comes from behind image (right side, positive x)
+              // Odd index: image on left, text on right - text comes from behind image (left side, negative x)
+              const slideDirection = index % 2 === 0 ? 100 : -100;
 
-                  {/* Description */}
-                  <div className="px-6 md:px-8 py-6 flex-1">
-                    {renderServiceItems(service.items)}
-                  </div>
-
-                  {/* Footer Accent */}
-                  <div className="px-6 md:px-8 py-3 border-t border-black/40">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[9px] tracking-[0.25em] uppercase text-black/70">
-                        Unibox Studio
-                      </span>
-                      <div className="flex items-center gap-2 text-black/60 group-hover:text-black transition-colors duration-300">
-                      <div className="w-12 h-px bg-gradient-to-r from-black/40 to-transparent group-hover:from-black/60 transition-colors duration-300" />
-
+              return (
+                <div ref={serviceRef} className="group relative">
+                  <div className="grid lg:grid-cols-[1fr_1.2fr] overflow-hidden relative">
+                    {/* Image Section */}
+                    <motion.div
+                      className={`relative bg-white overflow-hidden h-[300px] md:h-[400px] lg:h-full min-h-[400px] ${index % 2 === 0 ? 'lg:order-2 lg:z-20' : 'lg:order-1 lg:z-20'}`}
+                      initial={{ opacity: 0, scale: 1.1 }}
+                      animate={serviceInView ? { opacity: 1, scale: 1 } : {}}
+                      transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
+                      <div className="absolute inset-0">
+                        <Image
+                          src={service.backgroundImage}
+                          alt={service.title}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
                       </div>
                       
-                    </div>
+                      {/* Overlay Content */}
+                      <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
+                        <div className="mb-4 flex items-center gap-3">
+                          <div className="text-white/60 group-hover:text-white transition-colors duration-300">
+                            {/* {getServiceIcon(service)} */}
+                          </div>
+                        </div>
+                        <h3 className="text-lg md:text-3xl lg:text-3xl font-semibold leading-tight mb-2 uppercase text-white">
+                          {service.title}
+                        </h3>
+                      </div>
+                    </motion.div>
+
+                    {/* Content Section */}
+                    <motion.div
+                      className={`bg-white flex flex-col relative ${index % 2 === 0 ? 'lg:order-1 lg:z-10' : 'lg:order-2 lg:z-10'}`}
+                      initial={{ opacity: 0, x: slideDirection }}
+                      animate={serviceInView ? { opacity: 1, x: 0 } : {}}
+                      transition={{ 
+                        duration: 1, 
+                        delay: 1.5,
+                        ease: [0.25, 0.46, 0.45, 0.94]
+                      }}
+                      style={{
+                        willChange: 'transform',
+                      }}
+                    >
+                      {/* Header */}
+                      {/* <div className="px-6 md:px-8 py-6 border-b border-black/40">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <div className="text-black/60 group-hover:text-black transition-colors duration-300">
+                              {getServiceIcon(service)}
+                            </div>
+                            <div>
+                              <h4 className="text-xl md:text-2xl font-semibold text-black">
+                                {service.title}
+                              </h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div> */}
+
+                      {/* Description */}
+                      <div className="px-6 md:px-8 py-6 flex-1">
+                        {renderServiceItems(service.items)}
+                      </div>
+
+                      {/* Footer Accent */}
+                      <div className="px-6 md:px-8 py-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[9px] tracking-[0.25em] uppercase text-black/70">
+                            Unibox Studio
+                          </span>
+                          <div className="flex items-center gap-2 text-black/60 group-hover:text-black transition-colors duration-300">
+                          <div className="w-12 h-px bg-gradient-to-r from-black/40 to-transparent group-hover:from-black/60 transition-colors duration-300" />
+
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </motion.div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              );
+            };
+
+            return <ServiceItem key={index} service={service} index={index} />;
+          })}
         </div>
       </div>
     </section>

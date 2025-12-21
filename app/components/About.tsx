@@ -10,7 +10,7 @@ import { StaggerItem } from "./animations/StaggerItem";
 const stats = [
   // { icon: Award, label: "Awards Won", value: "50+" },
   { icon: Users, label: "Team Members", value: "30+" },
-  { icon: Lightbulb, label: "Projects Delivered", value: "Coming Soon" },
+  { icon: Lightbulb, label: "Projects Delivered", value: "Soon" },
   // { icon: Target, label: "Happy Clients", value: "150+" },
 ];
 

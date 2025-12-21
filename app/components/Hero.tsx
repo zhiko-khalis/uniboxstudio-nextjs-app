@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { Play } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import CubeLoader from "./CubeLoader";
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -71,6 +72,13 @@ export function Hero() {
         style={{ y }}
         className="container mx-auto px-6 z-10 text-center text-white relative"
       >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          {/* <CubeLoader /> */}
+        </motion.div>
         <motion.h1
           className="text-5xl md:text-7xl mb-6 font-bold" 
           style={{ 

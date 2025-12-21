@@ -36,17 +36,22 @@ export function Footer() {
   return (
     <motion.footer
       className="bg-primary text-primary-foreground py-12 overflow-hidden relative"
-      style={{
-        backgroundImage: "url('/pattern .svg')",
-        backgroundRepeat: "repeat",
-        backgroundPosition: "center",
-        backgroundSize: "auto",
-      }}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
     >
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "url('/patternnnnnn.svg')",
+          backgroundRepeat: "repeat",
+          backgroundPosition: "center",
+          backgroundSize: "auto",
+          opacity: 0.05,
+          scale: 1.5,
+        }}
+      />
       <div className="container mx-auto px-6">
         <StaggerContainer className="grid md:grid-cols-4 gap-8 mb-8" staggerDelay={0.1}>
           <StaggerItem>
@@ -149,7 +154,7 @@ export function Footer() {
         </StaggerContainer>
 
         <motion.div
-          className="pt-8 border-t border-primary-foreground/20 text-center opacity-80"
+          className="pt-8  text-center opacity-80"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 0.8 }}
           viewport={{ once: true }}
