@@ -36,7 +36,22 @@ export function WorkDetails({ project }: WorkDetailsProps) {
   // Handle fullscreen changes
   useEffect(() => {
     const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      const isFullscreenActive = !!(
+        document.fullscreenElement ||
+        (document as any).webkitFullscreenElement ||
+        (document as any).mozFullScreenElement ||
+        (document as any).msFullscreenElement
+      );
+      setIsFullscreen(isFullscreenActive);
+    };
+
+    // Handle iOS video fullscreen events
+    const handleVideoFullscreenStart = () => {
+      setIsFullscreen(true);
+    };
+
+    const handleVideoFullscreenEnd = () => {
+      setIsFullscreen(false);
     };
 
     document.addEventListener('fullscreenchange', handleFullscreenChange);
@@ -44,39 +59,99 @@ export function WorkDetails({ project }: WorkDetailsProps) {
     document.addEventListener('mozfullscreenchange', handleFullscreenChange);
     document.addEventListener('MSFullscreenChange', handleFullscreenChange);
 
+    // iOS Safari video fullscreen events
+    if (videoRef.current) {
+      videoRef.current.addEventListener('webkitbeginfullscreen', handleVideoFullscreenStart);
+      videoRef.current.addEventListener('webkitendfullscreen', handleVideoFullscreenEnd);
+    }
+
     return () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
       document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
       document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
       document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+      
+      if (videoRef.current) {
+        videoRef.current.removeEventListener('webkitbeginfullscreen', handleVideoFullscreenStart);
+        videoRef.current.removeEventListener('webkitendfullscreen', handleVideoFullscreenEnd);
+      }
     };
   }, []);
 
   const toggleFullscreen = async () => {
-    if (!videoContainerRef.current) return;
+    if (!videoRef.current) return;
 
     try {
-      if (!document.fullscreenElement) {
-        // Enter fullscreen
-        if (videoContainerRef.current.requestFullscreen) {
-          await videoContainerRef.current.requestFullscreen();
-        } else if ((videoContainerRef.current as any).webkitRequestFullscreen) {
-          await (videoContainerRef.current as any).webkitRequestFullscreen();
-        } else if ((videoContainerRef.current as any).mozRequestFullScreen) {
-          await (videoContainerRef.current as any).mozRequestFullScreen();
-        } else if ((videoContainerRef.current as any).msRequestFullscreen) {
-          await (videoContainerRef.current as any).msRequestFullscreen();
+      // Check if we're on a mobile device
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        // For mobile devices, use video element's native fullscreen
+        const video = videoRef.current;
+        
+        // Check if video is already in fullscreen
+        const isCurrentlyFullscreen = !!(
+          document.fullscreenElement === video ||
+          (document as any).webkitFullscreenElement === video ||
+          (document as any).mozFullScreenElement === video ||
+          (document as any).msFullscreenElement === video ||
+          (video as any).webkitDisplayingFullscreen
+        );
+        
+        if (isCurrentlyFullscreen) {
+          // Exit fullscreen
+          if (document.exitFullscreen) {
+            await document.exitFullscreen();
+          } else if ((document as any).webkitExitFullscreen) {
+            await (document as any).webkitExitFullscreen();
+          } else if ((document as any).mozCancelFullScreen) {
+            await (document as any).mozCancelFullScreen();
+          } else if ((document as any).msExitFullscreen) {
+            await (document as any).msExitFullscreen();
+          }
+        } else {
+          // Enter fullscreen using video element's native methods
+          // iOS Safari - this will show video at actual size
+          if ((video as any).webkitEnterFullscreen) {
+            (video as any).webkitEnterFullscreen();
+          } 
+          // Android Chrome and other mobile browsers
+          else if (video.requestFullscreen) {
+            await video.requestFullscreen();
+          } else if ((video as any).webkitRequestFullscreen) {
+            await (video as any).webkitRequestFullscreen();
+          } else if ((video as any).mozRequestFullScreen) {
+            await (video as any).mozRequestFullScreen();
+          } else if ((video as any).msRequestFullscreen) {
+            await (video as any).msRequestFullscreen();
+          }
         }
       } else {
-        // Exit fullscreen
-        if (document.exitFullscreen) {
-          await document.exitFullscreen();
-        } else if ((document as any).webkitExitFullscreen) {
-          await (document as any).webkitExitFullscreen();
-        } else if ((document as any).mozCancelFullScreen) {
-          await (document as any).mozCancelFullScreen();
-        } else if ((document as any).msExitFullscreen) {
-          await (document as any).msExitFullscreen();
+        // For desktop, use container-based fullscreen
+        if (!videoContainerRef.current) return;
+        
+        if (!document.fullscreenElement) {
+          // Enter fullscreen
+          if (videoContainerRef.current.requestFullscreen) {
+            await videoContainerRef.current.requestFullscreen();
+          } else if ((videoContainerRef.current as any).webkitRequestFullscreen) {
+            await (videoContainerRef.current as any).webkitRequestFullscreen();
+          } else if ((videoContainerRef.current as any).mozRequestFullScreen) {
+            await (videoContainerRef.current as any).mozRequestFullScreen();
+          } else if ((videoContainerRef.current as any).msRequestFullscreen) {
+            await (videoContainerRef.current as any).msRequestFullscreen();
+          }
+        } else {
+          // Exit fullscreen
+          if (document.exitFullscreen) {
+            await document.exitFullscreen();
+          } else if ((document as any).webkitExitFullscreen) {
+            await (document as any).webkitExitFullscreen();
+          } else if ((document as any).mozCancelFullScreen) {
+            await (document as any).mozCancelFullScreen();
+          } else if ((document as any).msExitFullscreen) {
+            await (document as any).msExitFullscreen();
+          }
         }
       }
     } catch (error) {
@@ -97,7 +172,7 @@ export function WorkDetails({ project }: WorkDetailsProps) {
       <section className="relative min-h-[100vh] flex items-end justify-center overflow-hidden">
         <motion.div
           ref={videoContainerRef}
-          className="absolute inset-0 z-0"
+          className={`absolute inset-0 z-0 ${isFullscreen ? '[&>video]:object-contain' : ''}`}
           initial={{ scale: 1.2 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
@@ -107,10 +182,9 @@ export function WorkDetails({ project }: WorkDetailsProps) {
             src={videoPath}
             autoPlay
             loop
-            
             playsInline
             preload="auto"
-            className="w-full h-full object-cover"
+            className={`w-full h-full ${isFullscreen ? 'object-contain' : 'object-cover'}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
